@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+    nodeapp:
+        build:
+            context: .
+            dockerfile: nodeapp.Dockerfile
+        environment:
+            - PORT=8000
+            - MONGODB_URI=mongodb://mongo-db:27017/node-mongo-docker-practice
+        ports:
+            - '80:8000'
+        volumes:
+            - .:/usr/src/node-mongo-docker-practice
+            # Files will be mounted to the container but will need a restart since we're not using nodemon
+        depends_on:
+            - mongo-db
+    mongo-db:
+        image: mongo:3.0
+        volumes:
+            - mongo-db:/data/db
+
+volumes:
+    mongo-db:
